@@ -4,6 +4,7 @@ from optparse import OptionParser
 from xml.etree import ElementTree
 from xml.dom.minidom import parseString
 from datetime import datetime
+import urllib
 import urllib2
 import re
 
@@ -30,8 +31,7 @@ def main():
                       help='The Jenkins host address. Default=localhost')
     parser.add_option('-p', '--port',
                       action='store', type='int', dest='port',
-                      default='8080',
-                      help='The Jenkins host port. Default=8080')
+                      help='The Jenkins host port.')
     parser.add_option('-v', '--view',
                       action='store', type='string', dest='view',
                       default='All',
@@ -50,13 +50,18 @@ def main():
     protocol = 'http'
     if options.enable_https:
         protocol = 'https'
+    if options.port is not None:
+        host = '%s:%s' % (options.address, str(options.port))
+    else:
+        host = options.address
+    view = urllib.pathname2url(options.view)
 
-    url = '%s://%s:%s/view/%s/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[description,number,url,result,building],healthReport[description]]' % (protocol, options.address, str(options.port), options.view)
+    url = '%s://%s/view/%s/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building],healthReport[description]]' % (protocol, host, view)
     if options.enable_debug:
         print 'Enable https:', options.enable_https
-        print 'Host: %s:%s' % (options.address, str(options.port))
+        print 'Host: %s' % host
         print 'View:', options.view
-        print url
+        print 'URL:', url
         print
 
     # enable HTML output
@@ -105,7 +110,19 @@ def main():
         
         # get last build's info
         last_build = job.find('lastBuild')
-        
+
+        # get last build id
+        last_build_id_node = last_build.find('id')
+        if last_build_id_node is not None:
+            last_build_id = last_build_id_node.text
+            print 'VIEW_%s_LAST_BUILD_ID="%s"' % (str(idx_job), last_build_id)
+            if enable_html:
+                output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
+                output_td_node.text = "Build ID"
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_id'})
+                output_td_node.text = last_build_id
+
         # get last build description
         last_build_desc_node = last_build.find('description')
         if last_build_desc_node is not None:
@@ -113,9 +130,9 @@ def main():
             print 'VIEW_%s_LAST_BUILD_DESC="%s"' % (str(idx_job), last_build_desc)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td')
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Build Description"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'build_description'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_description'})
                 output_td_node.text = last_build_desc
 
         # get last build number
@@ -125,9 +142,9 @@ def main():
             print 'VIEW_%s_LAST_BUILD_NUMBER="%s"' % (str(idx_job), last_build_number)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td')
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Build Number"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'build_number'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_number'})
                 output_td_node.text = last_build_number
 
         # get last build url
@@ -137,9 +154,9 @@ def main():
             print 'VIEW_%s_LAST_BUILD_URL="%s"' % (str(idx_job), last_build_url)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td')
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Build URL"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'build_url'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_url'})
                 output_td_node.text = last_build_url
 
         # get last build result
@@ -149,9 +166,9 @@ def main():
             print 'VIEW_%s_LAST_BUILD_RESULT="%s"' % (str(idx_job), last_build_result)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td')
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Build Result"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'build_result'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_result'})
                 output_td_node.text = last_build_result
 
         # get last building
@@ -161,16 +178,16 @@ def main():
             print 'VIEW_%s_LAST_BUILD_BUILDING="%s"' % (str(idx_job), last_build_building)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td')
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Building"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'build_building'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_building'})
                 output_td_node.text = last_build_building
 
         # get health reports
         idx_health_report = 0
         if enable_html:
             output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'colspan': '2', 'class': 'build_health'})
+            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'colspan': '2', 'class': 'value build_health'})
             output_ul_node = ElementTree.SubElement(output_td_node, 'ul')
         for health_report in job.findall('healthReport'):
             health_report_desc_node = health_report.find('description')
@@ -194,3 +211,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
