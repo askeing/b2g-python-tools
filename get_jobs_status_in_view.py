@@ -100,7 +100,7 @@ def main():
             if enable_html:
                 output_table_node = ElementTree.SubElement(output_root_node, 'table', attrib={'id': job_name, 'class': 'job_table'})
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_th_node = ElementTree.SubElement(output_tr_node, 'th', attrib={'class': 'job_name', 'colspan': '2', 'style': 'float: left; font-weight: bold'})
+                output_th_node = ElementTree.SubElement(output_tr_node, 'th', attrib={'class': 'job_name', 'colspan': '2', 'style': 'font-weight: bold'})
                 output_th_node.text = job_name
         
         # get last build's info
