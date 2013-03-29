@@ -41,11 +41,6 @@ def main():
                       help='The html output file.')
     (options, args) = parser.parse_args()
 
-    print options
-    #if len(args) <= 0:
-    #    parser.print_help()
-    #    parser.error('need more then one options.')
-    
     # Setup Jenkins Server's URL
     protocol = 'http'
     if options.enable_https:
@@ -107,7 +102,7 @@ def main():
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_th_node = ElementTree.SubElement(output_tr_node, 'th', attrib={'class': 'job_name', 'colspan': '2', 'style': 'font-weight: bold'})
                 output_th_node.text = job_name
-        
+
         # get last build's info
         last_build = job.find('lastBuild')
 
@@ -211,4 +206,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
