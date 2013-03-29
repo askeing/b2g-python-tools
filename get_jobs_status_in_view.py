@@ -76,17 +76,24 @@ def main():
 
     # print list view name
     root_name = root.find('name').text
+    root_url = root.find('url').text
     print 'VIEW_NAME="%s"' % root_name
+    print 'VIEW_URL="%s"' % root_url
     now = datetime.now()
     print 'DATE="%s"' % now.strftime('%a, %d %b %Y %I:%M:%S')
     if enable_html:
         output_root_node = ElementTree.Element('div', attrib={'id': root_name})
         output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_name'})
         output_div_node.text = root_name
+        output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_url'})
+        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'key view_url_key'})
+        output_span_node.text = "URL: "
+        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'value view_url_value'})
+        output_span_node.text = root_url
         output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_date'})
-        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'view_date_key'})
+        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'key view_date_key'})
         output_span_node.text = "Date: "
-        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'view_date_value'})
+        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'value view_date_value'})
         output_span_node.text = now.strftime('%a, %d %b %Y %I:%M:%S')
         output_br_node = ElementTree.SubElement(output_root_node, 'br')
 
