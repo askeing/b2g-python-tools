@@ -81,10 +81,13 @@ def main():
     print 'DATE="%s"' % now.strftime('%a, %d %b %Y %I:%M:%S')
     if enable_html:
         output_root_node = ElementTree.Element('div', attrib={'id': root_name})
-        output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'style': 'font-size: 150%; font-weight: bold'})
+        output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_name'})
         output_div_node.text = root_name
-        output_div_node = ElementTree.SubElement(output_root_node, 'div')
-        output_div_node.text = "Date: " + now.strftime('%a, %d %b %Y %I:%M:%S')
+        output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_date'})
+        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'view_date_key'})
+        output_span_node.text = "Date: "
+        output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'view_date_value'})
+        output_span_node.text = now.strftime('%a, %d %b %Y %I:%M:%S')
         output_br_node = ElementTree.SubElement(output_root_node, 'br')
 
     # find all jobs
@@ -100,7 +103,7 @@ def main():
             if enable_html:
                 output_table_node = ElementTree.SubElement(output_root_node, 'table', attrib={'id': job_name, 'class': 'job_table'})
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-                output_th_node = ElementTree.SubElement(output_tr_node, 'th', attrib={'class': 'job_name', 'colspan': '2', 'style': 'font-weight: bold'})
+                output_th_node = ElementTree.SubElement(output_tr_node, 'th', attrib={'class': 'job_name', 'colspan': '2'})
                 output_th_node.text = job_name
 
         # get last build's info
