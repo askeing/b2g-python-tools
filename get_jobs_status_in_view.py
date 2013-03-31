@@ -12,7 +12,7 @@ import re
 def main():
     """
     Jenkins API
-    api/xml?depth=2&tree=name,url,jobs[name,healthReport[description],lastBuild[number,result,building,url]]
+    {VIEW_URL_PATH}/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building],healthReport[description]]
     """
 
     # Added parser
