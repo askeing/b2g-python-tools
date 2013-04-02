@@ -175,7 +175,7 @@ def main():
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Build Result"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_result', 'text': last_build_result})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_result ' + last_build_result})
                 output_td_node.text = last_build_result
 
         # get last building
@@ -187,7 +187,7 @@ def main():
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Building"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_building', 'text': last_build_building})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_building ' + last_build_building})
                 output_td_node.text = last_build_building
 
         # get artifacts
