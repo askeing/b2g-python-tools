@@ -12,7 +12,7 @@ import re
 def main():
     """
     Jenkins API
-    api/xml?depth=2&tree=name,url,jobs[name,healthReport[description],lastBuild[number,result,building,url]]
+    api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building,artifacts[displayPath,relativePath]],healthReport[description]]
     """
 
     # Added parser
@@ -51,7 +51,7 @@ def main():
         host = options.address
     view = urllib.pathname2url(options.view)
 
-    url = '%s://%s/view/%s/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building],healthReport[description]]' % (protocol, host, view)
+    url = '%s://%s/view/%s/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building,artifacts[displayPath,relativePath]],healthReport[description]]' % (protocol, host, view)
     if options.enable_debug:
         print 'Enable https:', options.enable_https
         print 'Host: %s' % host
@@ -173,7 +173,7 @@ def main():
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Build Result"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_result'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_result', 'text': last_build_result})
                 output_td_node.text = last_build_result
 
         # get last building
@@ -185,14 +185,37 @@ def main():
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
                 output_td_node.text = "Building"
-                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_building'})
+                output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_building', 'text': last_build_building})
                 output_td_node.text = last_build_building
+
+        # get artifacts
+        idx_artifact = 0
+        if enable_html and len(last_build.findall('artifact')) > 0:
+            output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
+            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
+            output_td_node.text = "Artifacts"
+            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_artifacts'})
+            output_ul_node = ElementTree.SubElement(output_td_node, 'ul')
+        for artifact in last_build.findall('artifact'):
+            artifact_display_path_node = artifact.find('displayPath')
+            artifact_relative_path_node = artifact.find('relativePath')
+            if artifact_display_path_node is not None and artifact_relative_path_node is not None:
+                artifact_display_path = artifact_display_path_node.text
+                artifact_relative_path = artifact_relative_path_node.text
+                print 'VIEW_%s_ARTIFACT_%s="%s"' % (str(idx_job), str(idx_artifact), artifact_relative_path)
+                if enable_html:
+                    output_li_node = ElementTree.SubElement(output_ul_node, 'li')
+                    output_a_node = ElementTree.SubElement(output_li_node, 'a', attrib={'class': 'artifact link', 'href': last_build_url + 'artifact/' + artifact_relative_path})
+                    output_a_node.text = artifact_display_path
+            idx_artifact = idx_artifact + 1
 
         # get health reports
         idx_health_report = 0
-        if enable_html:
+        if enable_html and len(job.findall('healthReport')) > 0:
             output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
-            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'colspan': '2', 'class': 'value build_health'})
+            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
+            output_td_node.text = "Health Reports"
+            output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_health_reports'})
             output_ul_node = ElementTree.SubElement(output_td_node, 'ul')
         for health_report in job.findall('healthReport'):
             health_report_desc_node = health_report.find('description')
