@@ -11,10 +11,10 @@ import re
 
 def main():
     """
-    
+
     Jenkins API
     {VIEW_URL_PATH}/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building,artifacts[displayPath,relativePath]],healthReport[description]]
-    
+
     """
 
     # Added parser
