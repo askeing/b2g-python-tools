@@ -8,15 +8,15 @@ import urllib
 import urllib2
 import re
 
+'''
+Author: Askeing (askeing@gmail.com)
+
+Jenkins API
+{VIEW_URL_PATH}/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building,artifacts[displayPath,relativePath]],healthReport[description]]
+'''
+
 
 def main():
-    """
-
-    Jenkins API
-    {VIEW_URL_PATH}/api/xml?depth=2&tree=name,url,jobs[name,lastBuild[id,description,number,url,result,building,artifacts[displayPath,relativePath]],healthReport[description]]
-
-    """
-
     # Added parser
     parser = OptionParser()
     parser.add_option('-d', '--debug',
