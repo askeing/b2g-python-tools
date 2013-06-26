@@ -78,7 +78,10 @@ def main():
     #ET.dump(output_updates)
     output_file = options.output
     if not os.path.exists(output_file):
-        os.makedirs(output_file[:output_file.rindex('/')])
+        try:
+            os.makedirs(output_file[:output_file.rindex('/')])
+        except OSError as e:
+            print e.message
     f = open(output_file, 'w')
     xml = ET.tostring(output_updates)
     xml_dom = parseString(xml)
