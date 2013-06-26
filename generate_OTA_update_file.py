@@ -28,7 +28,7 @@ def main():
     parser.add_option('-b', '--buildid', help='specify the BuildID', action='store', type='int', dest='buildid', default=0)
     parser.add_option('-p', '--partial', help='specify the type of the update is partial, not complete', action='store_true', dest='partial', default=False)
     parser.add_option('-M', '--major', help='specify the update is major update, not minor', action='store_true', dest='major', default=False)
-    parser.add_option('-v', '--version', help='specify the update version', action='store', type='int', dest='version', default=19)
+    parser.add_option('-v', '--version', help='specify the update version', action='store', type='int', dest='version', default=22)
     parser.add_option('-u', '--url', help='specify the URL of update mar file', action='store', type='string', dest='url', default='')
     parser.add_option('-o', '--output', help='specify the output update.xml file', action='store', type='string', dest='output', default='out/update.xml')
     (options, args) = parser.parse_args()
