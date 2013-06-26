@@ -7,6 +7,8 @@ from xml.dom.minidom import parseString
 '''
 Author: Askeing (askeing@gmail.com)
 
+ref: https://wiki.mozilla.org/B2G/Updating
+
 <?xml version='1.0'?>
 <updates>
   <update type='minor' appVersion='19.0' version='19.0' extensionVersion='19.0' buildID='20130101000000'
