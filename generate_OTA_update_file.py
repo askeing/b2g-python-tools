@@ -34,6 +34,9 @@ def main():
     (options, args) = parser.parse_args()
 
     # if there is no OTA MAR update file exist, quit.
+    if options.file == None:
+        parser.print_help()
+        exit(-1)
     if not os.path.isfile(options.file):
         print 'File not exist.'
         exit(-1)
