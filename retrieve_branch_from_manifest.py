@@ -13,7 +13,7 @@ ref: https://github.com/mozilla-b2g/b2g-manifest
 
 def main():
     parser = optparse.OptionParser(description='Retrieve gaia/gecko version from manifest.xml file')
-    parser.add_option('-f', '--file', help='specify the manifest file', action='store', type='string', dest='file', default="")
+    parser.add_option('-f', '--file', help='specify the manifest file', action='store', type='string', dest='file')
     (options, args) = parser.parse_args()
 
     # if there is no OTA MAR update file exist, quit.
