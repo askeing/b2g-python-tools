@@ -83,7 +83,7 @@ def main():
     print 'VIEW_NAME=%s' % root_name
     print 'VIEW_URL=%s' % root_url
     now = datetime.now()
-    print 'DATE=%s' % now.strftime('%a, %d %b %Y %I:%M:%S')
+    print 'VIEW_DATE=%s' % now.strftime('%a, %d %b %Y %I:%M:%S')
     if enable_html:
         output_root_node = ElementTree.Element('div', attrib={'id': root_name})
         output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_info view_name'})
