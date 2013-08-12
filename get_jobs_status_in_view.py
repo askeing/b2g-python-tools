@@ -40,6 +40,7 @@ def main():
                       help='The View\'s name in Jenkins. Default=All')
     parser.add_option('-o', '--ouput-html',
                       action='store', type='string', dest='output',
+                      default='out.html',
                       help='The html output file.')
     (options, args) = parser.parse_args()
 
@@ -79,10 +80,10 @@ def main():
     # print list view name
     root_name = root.find('name').text
     root_url = root.find('url').text
-    print 'VIEW_NAME="%s"' % root_name
-    print 'VIEW_URL="%s"' % root_url
+    print 'VIEW_NAME=%s' % root_name
+    print 'VIEW_URL=%s' % root_url
     now = datetime.now()
-    print 'DATE="%s"' % now.strftime('%a, %d %b %Y %I:%M:%S')
+    print 'DATE=%s' % now.strftime('%a, %d %b %Y %I:%M:%S')
     if enable_html:
         output_root_node = ElementTree.Element('div', attrib={'id': root_name})
         output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_info view_name'})
@@ -108,7 +109,7 @@ def main():
         job_name_node = job.find('name')
         if job_name_node is not None:
             job_name = job_name_node.text
-            print 'VIEW_%s_JOB_NAME="%s"' % (idx_job, job_name)
+            print 'VIEW_%s_JOB_NAME=%s' % (idx_job, job_name)
             if enable_html:
                 output_table_node = ElementTree.SubElement(output_root_node, 'table', attrib={'id': job_name, 'class': 'job_table'})
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
@@ -122,7 +123,7 @@ def main():
         last_build_id_node = last_build.find('id')
         if last_build_id_node is not None:
             last_build_id = last_build_id_node.text
-            print 'VIEW_%s_LAST_BUILD_ID="%s"' % (str(idx_job), last_build_id)
+            print 'VIEW_%s_LAST_BUILD_ID=%s' % (str(idx_job), last_build_id)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
@@ -133,8 +134,8 @@ def main():
         # get last build description
         last_build_desc_node = last_build.find('description')
         if last_build_desc_node is not None:
-            last_build_desc = last_build_desc_node.text
-            print 'VIEW_%s_LAST_BUILD_DESC="%s"' % (str(idx_job), last_build_desc)
+            last_build_desc = last_build_desc_node.text.replace(' ', ',')
+            print 'VIEW_%s_LAST_BUILD_DESC=%s' % (str(idx_job), last_build_desc)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
@@ -146,7 +147,7 @@ def main():
         last_build_number_node = last_build.find('number')
         if last_build_number_node is not None:
             last_build_number = last_build_number_node.text
-            print 'VIEW_%s_LAST_BUILD_NUMBER="%s"' % (str(idx_job), last_build_number)
+            print 'VIEW_%s_LAST_BUILD_NUMBER=%s' % (str(idx_job), last_build_number)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
@@ -158,7 +159,7 @@ def main():
         last_build_url_node = last_build.find('url')
         if last_build_url_node is not None:
             last_build_url = last_build_url_node.text
-            print 'VIEW_%s_LAST_BUILD_URL="%s"' % (str(idx_job), last_build_url)
+            print 'VIEW_%s_LAST_BUILD_URL=%s' % (str(idx_job), last_build_url)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
@@ -170,7 +171,7 @@ def main():
         last_build_result_node = last_build.find('result')
         if last_build_result_node is not None:
             last_build_result = last_build_result_node.text
-            print 'VIEW_%s_LAST_BUILD_RESULT="%s"' % (str(idx_job), last_build_result)
+            print 'VIEW_%s_LAST_BUILD_RESULT=%s' % (str(idx_job), last_build_result)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
@@ -182,7 +183,7 @@ def main():
         last_build_building_node = last_build.find('building')
         if last_build_building_node is not None:
             last_build_building = last_build_building_node.text
-            print 'VIEW_%s_LAST_BUILD_BUILDING="%s"' % (str(idx_job), last_build_building)
+            print 'VIEW_%s_LAST_BUILD_BUILDING=%s' % (str(idx_job), last_build_building)
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
@@ -204,7 +205,7 @@ def main():
             if artifact_display_path_node is not None and artifact_relative_path_node is not None:
                 artifact_display_path = artifact_display_path_node.text
                 artifact_relative_path = artifact_relative_path_node.text
-                print 'VIEW_%s_ARTIFACT_%s="%s"' % (str(idx_job), str(idx_artifact), artifact_relative_path)
+                print 'VIEW_%s_ARTIFACT_%s=%s' % (str(idx_job), str(idx_artifact), artifact_relative_path)
                 if enable_html:
                     output_li_node = ElementTree.SubElement(output_ul_node, 'li')
                     output_a_node = ElementTree.SubElement(output_li_node, 'a', attrib={'class': 'artifact link', 'href': last_build_url + 'artifact/' + artifact_relative_path})
@@ -222,8 +223,8 @@ def main():
         for health_report in job.findall('healthReport'):
             health_report_desc_node = health_report.find('description')
             if health_report_desc_node is not None:
-                health_report_desc = health_report_desc_node.text
-                print 'VIEW_%s_HEALTH_REPORT_%s="%s"' % (str(idx_job), str(idx_health_report), health_report_desc)
+                health_report_desc = health_report_desc_node.text.replace(' ', '_')
+                print 'VIEW_%s_HEALTH_REPORT_%s=%s' % (str(idx_job), str(idx_health_report), health_report_desc)
                 if enable_html:
                     output_li_node = ElementTree.SubElement(output_ul_node, 'li')
                     output_li_node.text = health_report_desc
