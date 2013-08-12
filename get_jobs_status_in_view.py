@@ -90,12 +90,12 @@ def main():
         output_div_node.text = root_name
         output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_info view_url'})
         output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'key view_url_key'})
-        output_span_node.text = "URL: "
+        output_span_node.text = 'URL: '
         output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'value view_url_value'})
         output_span_node.text = root_url
         output_div_node = ElementTree.SubElement(output_root_node, 'div', attrib={'class': 'view_info view_date'})
         output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'key view_date_key'})
-        output_span_node.text = "Date: "
+        output_span_node.text = 'Date: '
         output_span_node = ElementTree.SubElement(output_div_node, 'span', attrib={'class': 'value view_date_value'})
         output_span_node.text = now.strftime('%a, %d %b %Y %I:%M:%S')
         output_br_node = ElementTree.SubElement(output_root_node, 'br')
@@ -104,7 +104,7 @@ def main():
     idx_job = 0
     jobs = root.findall('job')
     for job in jobs:
-        print ""
+        print ''
         # print job name
         job_name_node = job.find('name')
         if job_name_node is not None:
@@ -127,7 +127,7 @@ def main():
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-                output_td_node.text = "Build ID"
+                output_td_node.text = 'Build ID'
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_id'})
                 output_td_node.text = last_build_id
 
@@ -139,7 +139,7 @@ def main():
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-                output_td_node.text = "Build Description"
+                output_td_node.text = 'Build Description'
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_description'})
                 output_td_node.text = last_build_desc
 
@@ -151,7 +151,7 @@ def main():
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-                output_td_node.text = "Build Number"
+                output_td_node.text = 'Build Number'
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_number'})
                 output_td_node.text = last_build_number
 
@@ -163,7 +163,7 @@ def main():
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-                output_td_node.text = "Build URL"
+                output_td_node.text = 'Build URL'
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_url'})
                 output_td_node.text = last_build_url
 
@@ -175,7 +175,7 @@ def main():
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-                output_td_node.text = "Build Result"
+                output_td_node.text = 'Build Result'
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_result ' + last_build_result})
                 output_td_node.text = last_build_result
 
@@ -187,7 +187,7 @@ def main():
             if enable_html:
                 output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-                output_td_node.text = "Building"
+                output_td_node.text = 'Building'
                 output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_building ' + last_build_building})
                 output_td_node.text = last_build_building
 
@@ -196,7 +196,7 @@ def main():
         if enable_html and len(last_build.findall('artifact')) > 0:
             output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
             output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-            output_td_node.text = "Artifacts"
+            output_td_node.text = 'Artifacts'
             output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_artifacts'})
             output_ul_node = ElementTree.SubElement(output_td_node, 'ul')
         for artifact in last_build.findall('artifact'):
@@ -217,7 +217,7 @@ def main():
         if enable_html and len(job.findall('healthReport')) > 0:
             output_tr_node = ElementTree.SubElement(output_table_node, 'tr')
             output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'key'})
-            output_td_node.text = "Health Reports"
+            output_td_node.text = 'Health Reports'
             output_td_node = ElementTree.SubElement(output_tr_node, 'td', attrib={'class': 'value build_health_reports'})
             output_ul_node = ElementTree.SubElement(output_td_node, 'ul')
         for health_report in job.findall('healthReport'):
